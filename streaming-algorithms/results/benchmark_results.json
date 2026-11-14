@@ -1,0 +1,549 @@
+{
+  "dataset": {
+    "name": "MovieLens 1M",
+    "ratings_path": "data/ml-1m/ratings.dat",
+    "records": 1000209,
+    "unique_movie_ids": 3706,
+    "record_format": "UserID::MovieID::Rating::Timestamp",
+    "stream_key": "movie:<MovieID>",
+    "ground_truth_distinct_frequency_map_entries": 3706
+  },
+  "environment": {
+    "python": "3.14.8 (tags/v3.14.8:8e6e75d, Sep 30 2026, 18:19:33) [MSC v.1944 64 bit (AMD64)]",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "processor": "AMD64 Family 25 Model 97 Stepping 2, AuthenticAMD",
+    "logical_cpu_count": 32,
+    "timing_method": "time.perf_counter; median of repeated full file streaming passes",
+    "repeats": 3,
+    "negative_queries_per_bloom_config": 100000
+  },
+  "methodology": {
+    "streaming": "Each timed pass opens ratings.dat and parses it one line at a time; records are not loaded as a collection.",
+    "ground_truth": "A separate one-pass Counter over MovieID is held only for evaluation. It has O(number of distinct MovieIDs) memory and is excluded from sketch/filter memory.",
+    "memory": "Reports compact payload bytes and sys.getsizeof-based structure bytes. Ground-truth Counter and input buffers are excluded.",
+    "bloom_negative_queries": "Unseen keys movie:10000000 through the requested query range; key format matches inserted keys.",
+    "cms_error": "Count-Min estimates are compared for all distinct observed MovieIDs; report mean absolute error, mean/p95 relative error, total overcount and exact top-10 recall."
+  },
+  "bloom_filter": [
+    {
+      "algorithm": "Bloom Filter",
+      "bit_count": 16384,
+      "hash_count": 3,
+      "records_processed": 1000209,
+      "unique_movie_ids": 3706,
+      "false_positives": 12079,
+      "negative_queries": 100000,
+      "false_positive_rate": 0.12079,
+      "theoretical_false_positive_rate": 0.11958095127667771,
+      "false_negatives": 0,
+      "positive_queries": 3706,
+      "payload_bytes": 2048,
+      "structure_bytes_sys_getsizeof": 2433,
+      "build_seconds_runs": [
+        2.3398141999998643,
+        3.310817600000064,
+        3.3442428000000746
+      ],
+      "build_seconds_median": 3.310817600000064,
+      "records_per_second": 302103.3233603629,
+      "positive_query_seconds": 0.010914500000126282,
+      "negative_query_seconds": 0.2816952999999103,
+      "negative_queries_per_second": 354993.49829419184,
+      "bit_occupancy": 0.49530029296875
+    },
+    {
+      "algorithm": "Bloom Filter",
+      "bit_count": 32768,
+      "hash_count": 6,
+      "records_processed": 1000209,
+      "unique_movie_ids": 3706,
+      "false_positives": 1483,
+      "negative_queries": 100000,
+      "false_positive_rate": 0.01483,
+      "theoretical_false_positive_rate": 0.014299603908235167,
+      "false_negatives": 0,
+      "positive_queries": 3706,
+      "payload_bytes": 4096,
+      "structure_bytes_sys_getsizeof": 4457,
+      "build_seconds_runs": [
+        4.052759100000003,
+        4.0181780000000344,
+        2.8534139999999297
+      ],
+      "build_seconds_median": 4.0181780000000344,
+      "records_per_second": 248921.02838649543,
+      "positive_query_seconds": 0.011421200000086174,
+      "negative_query_seconds": 0.20550360000015644,
+      "negative_queries_per_second": 486609.48032016895,
+      "bit_occupancy": 0.495147705078125
+    },
+    {
+      "algorithm": "Bloom Filter",
+      "bit_count": 65536,
+      "hash_count": 12,
+      "records_processed": 1000209,
+      "unique_movie_ids": 3706,
+      "false_positives": 23,
+      "negative_queries": 100000,
+      "false_positive_rate": 0.00023,
+      "theoretical_false_positive_rate": 0.00020447867193241448,
+      "false_negatives": 0,
+      "positive_queries": 3706,
+      "payload_bytes": 8192,
+      "structure_bytes_sys_getsizeof": 8529,
+      "build_seconds_runs": [
+        3.7877915999999914,
+        3.9650404999999864,
+        4.014977999999928
+      ],
+      "build_seconds_median": 3.9650404999999864,
+      "records_per_second": 252256.94415983983,
+      "positive_query_seconds": 0.013095700000121724,
+      "negative_query_seconds": 0.19047890000001644,
+      "negative_queries_per_second": 524992.5319811873,
+      "bit_occupancy": 0.4918212890625
+    }
+  ],
+  "count_min_sketch": [
+    {
+      "algorithm": "Count-Min Sketch",
+      "width": 64,
+      "depth": 3,
+      "records_processed": 1000209,
+      "unique_movie_ids": 3706,
+      "payload_bytes": 1536,
+      "structure_bytes_sys_getsizeof": 2142,
+      "epsilon_bound": 0.04247315356967258,
+      "delta_bound": 0.049787068367863944,
+      "build_seconds_runs": [
+        4.187697200000002,
+        4.162034799999901,
+        4.156378399999994
+      ],
+      "build_seconds_median": 4.162034799999901,
+      "records_per_second": 240317.30825509285,
+      "all_keys_query_seconds": 0.02499109999985194,
+      "mean_absolute_error": 12569.459525094442,
+      "max_absolute_error": 22969,
+      "mean_relative_error_percent": 85910.59789084378,
+      "p95_relative_error_percent": 525100.0,
+      "total_overcount_percent_of_all_records": 4657.268330918838,
+      "top10_recall": 0.0,
+      "all_estimates_at_least_exact": true,
+      "exact_top10": [
+        {
+          "movie_id": "2858",
+          "count": 3428
+        },
+        {
+          "movie_id": "260",
+          "count": 2991
+        },
+        {
+          "movie_id": "1196",
+          "count": 2990
+        },
+        {
+          "movie_id": "1210",
+          "count": 2883
+        },
+        {
+          "movie_id": "480",
+          "count": 2672
+        },
+        {
+          "movie_id": "2028",
+          "count": 2653
+        },
+        {
+          "movie_id": "589",
+          "count": 2649
+        },
+        {
+          "movie_id": "2571",
+          "count": 2590
+        },
+        {
+          "movie_id": "1270",
+          "count": 2583
+        },
+        {
+          "movie_id": "593",
+          "count": 2578
+        }
+      ],
+      "estimated_top10": [
+        {
+          "movie_id": "1510",
+          "estimate": 22971
+        },
+        {
+          "movie_id": "1968",
+          "estimate": 22036
+        },
+        {
+          "movie_id": "316",
+          "estimate": 21286
+        },
+        {
+          "movie_id": "1504",
+          "estimate": 20831
+        },
+        {
+          "movie_id": "1721",
+          "estimate": 20831
+        },
+        {
+          "movie_id": "2443",
+          "estimate": 20831
+        },
+        {
+          "movie_id": "3950",
+          "estimate": 20831
+        },
+        {
+          "movie_id": "734",
+          "estimate": 20831
+        },
+        {
+          "movie_id": "2706",
+          "estimate": 20798
+        },
+        {
+          "movie_id": "3045",
+          "estimate": 20798
+        }
+      ]
+    },
+    {
+      "algorithm": "Count-Min Sketch",
+      "width": 256,
+      "depth": 3,
+      "records_processed": 1000209,
+      "unique_movie_ids": 3706,
+      "payload_bytes": 6144,
+      "structure_bytes_sys_getsizeof": 6726,
+      "epsilon_bound": 0.010618288392418145,
+      "delta_bound": 0.049787068367863944,
+      "build_seconds_runs": [
+        4.242217900000014,
+        4.251620300000013,
+        4.100045800000089
+      ],
+      "build_seconds_median": 4.242217900000014,
+      "records_per_second": 235775.0175916227,
+      "all_keys_query_seconds": 0.020453799999813782,
+      "mean_absolute_error": 2506.5620615218563,
+      "max_absolute_error": 7267,
+      "mean_relative_error_percent": 16875.905749908197,
+      "p95_relative_error_percent": 101275.0,
+      "total_overcount_percent_of_all_records": 928.7377938010956,
+      "top10_recall": 0.0,
+      "all_estimates_at_least_exact": true,
+      "exact_top10": [
+        {
+          "movie_id": "2858",
+          "count": 3428
+        },
+        {
+          "movie_id": "260",
+          "count": 2991
+        },
+        {
+          "movie_id": "1196",
+          "count": 2990
+        },
+        {
+          "movie_id": "1210",
+          "count": 2883
+        },
+        {
+          "movie_id": "480",
+          "count": 2672
+        },
+        {
+          "movie_id": "2028",
+          "count": 2653
+        },
+        {
+          "movie_id": "589",
+          "count": 2649
+        },
+        {
+          "movie_id": "2571",
+          "count": 2590
+        },
+        {
+          "movie_id": "1270",
+          "count": 2583
+        },
+        {
+          "movie_id": "593",
+          "count": 2578
+        }
+      ],
+      "estimated_top10": [
+        {
+          "movie_id": "2642",
+          "estimate": 7778
+        },
+        {
+          "movie_id": "1661",
+          "estimate": 6942
+        },
+        {
+          "movie_id": "471",
+          "estimate": 6837
+        },
+        {
+          "movie_id": "858",
+          "estimate": 6709
+        },
+        {
+          "movie_id": "924",
+          "estimate": 6638
+        },
+        {
+          "movie_id": "1721",
+          "estimate": 6620
+        },
+        {
+          "movie_id": "3361",
+          "estimate": 6554
+        },
+        {
+          "movie_id": "1680",
+          "estimate": 6544
+        },
+        {
+          "movie_id": "483",
+          "estimate": 6493
+        },
+        {
+          "movie_id": "1307",
+          "estimate": 6411
+        }
+      ]
+    },
+    {
+      "algorithm": "Count-Min Sketch",
+      "width": 512,
+      "depth": 5,
+      "records_processed": 1000209,
+      "unique_movie_ids": 3706,
+      "payload_bytes": 20480,
+      "structure_bytes_sys_getsizeof": 21138,
+      "epsilon_bound": 0.0053091441962090724,
+      "delta_bound": 0.006737946999085467,
+      "build_seconds_runs": [
+        6.557374799999934,
+        6.5155313999998725,
+        6.440966899999921
+      ],
+      "build_seconds_median": 6.5155313999998725,
+      "records_per_second": 153511.5002285185,
+      "all_keys_query_seconds": 0.030975599999919723,
+      "mean_absolute_error": 723.1252023745278,
+      "max_absolute_error": 2773,
+      "mean_relative_error_percent": 4830.469423649734,
+      "p95_relative_error_percent": 26550.0,
+      "total_overcount_percent_of_all_records": 267.9342017518338,
+      "top10_recall": 0.5,
+      "all_estimates_at_least_exact": true,
+      "exact_top10": [
+        {
+          "movie_id": "2858",
+          "count": 3428
+        },
+        {
+          "movie_id": "260",
+          "count": 2991
+        },
+        {
+          "movie_id": "1196",
+          "count": 2990
+        },
+        {
+          "movie_id": "1210",
+          "count": 2883
+        },
+        {
+          "movie_id": "480",
+          "count": 2672
+        },
+        {
+          "movie_id": "2028",
+          "count": 2653
+        },
+        {
+          "movie_id": "589",
+          "count": 2649
+        },
+        {
+          "movie_id": "2571",
+          "count": 2590
+        },
+        {
+          "movie_id": "1270",
+          "count": 2583
+        },
+        {
+          "movie_id": "593",
+          "count": 2578
+        }
+      ],
+      "estimated_top10": [
+        {
+          "movie_id": "858",
+          "estimate": 4594
+        },
+        {
+          "movie_id": "2858",
+          "estimate": 4188
+        },
+        {
+          "movie_id": "260",
+          "estimate": 4031
+        },
+        {
+          "movie_id": "2028",
+          "estimate": 3829
+        },
+        {
+          "movie_id": "2268",
+          "estimate": 3614
+        },
+        {
+          "movie_id": "1196",
+          "estimate": 3603
+        },
+        {
+          "movie_id": "2396",
+          "estimate": 3570
+        },
+        {
+          "movie_id": "1210",
+          "estimate": 3534
+        },
+        {
+          "movie_id": "2321",
+          "estimate": 3509
+        },
+        {
+          "movie_id": "608",
+          "estimate": 3436
+        }
+      ]
+    },
+    {
+      "algorithm": "Count-Min Sketch",
+      "width": 2048,
+      "depth": 5,
+      "records_processed": 1000209,
+      "unique_movie_ids": 3706,
+      "payload_bytes": 81920,
+      "structure_bytes_sys_getsizeof": 82554,
+      "epsilon_bound": 0.0013272860490522681,
+      "delta_bound": 0.006737946999085467,
+      "build_seconds_runs": [
+        6.473436900000024,
+        6.4832677000001695,
+        6.39897400000018
+      ],
+      "build_seconds_median": 6.473436900000024,
+      "records_per_second": 154509.73191690433,
+      "all_keys_query_seconds": 0.030604699999912555,
+      "mean_absolute_error": 35.613869400971396,
+      "max_absolute_error": 966,
+      "mean_relative_error_percent": 207.7556178136665,
+      "p95_relative_error_percent": 592.8571428571429,
+      "total_overcount_percent_of_all_records": 13.19574208990321,
+      "top10_recall": 0.9,
+      "all_estimates_at_least_exact": true,
+      "exact_top10": [
+        {
+          "movie_id": "2858",
+          "count": 3428
+        },
+        {
+          "movie_id": "260",
+          "count": 2991
+        },
+        {
+          "movie_id": "1196",
+          "count": 2990
+        },
+        {
+          "movie_id": "1210",
+          "count": 2883
+        },
+        {
+          "movie_id": "480",
+          "count": 2672
+        },
+        {
+          "movie_id": "2028",
+          "count": 2653
+        },
+        {
+          "movie_id": "589",
+          "count": 2649
+        },
+        {
+          "movie_id": "2571",
+          "count": 2590
+        },
+        {
+          "movie_id": "1270",
+          "count": 2583
+        },
+        {
+          "movie_id": "593",
+          "count": 2578
+        }
+      ],
+      "estimated_top10": [
+        {
+          "movie_id": "2858",
+          "estimate": 3461
+        },
+        {
+          "movie_id": "260",
+          "estimate": 2991
+        },
+        {
+          "movie_id": "1196",
+          "estimate": 2990
+        },
+        {
+          "movie_id": "1210",
+          "estimate": 2883
+        },
+        {
+          "movie_id": "1265",
+          "estimate": 2842
+        },
+        {
+          "movie_id": "480",
+          "estimate": 2672
+        },
+        {
+          "movie_id": "2028",
+          "estimate": 2653
+        },
+        {
+          "movie_id": "589",
+          "estimate": 2649
+        },
+        {
+          "movie_id": "2571",
+          "estimate": 2590
+        },
+        {
+          "movie_id": "1270",
+          "estimate": 2583
+        }
+      ]
+    }
+  ]
+}
